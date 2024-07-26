@@ -60,11 +60,9 @@ class LaneDetection():
                 lane = [combined_lines[i][0], combined_lines[i][1], combined_lines[i + 1][1]] #slope, intercept1, intercept2
                 lanes.append(lane)
         return lanes
-    
-    def lanes_to_coordinates(lanes):
-        return
 
     def draw_lanes(img, lanes, color = (0, 255, 0)):
+        #lane = [slope, intercept1, intercept2]
         for lane in lanes:
             cv2.line(img, (lane[0], lane[1]), (lane[2], lane[3]), color, 2)
             cv2.line(img, (lane[4], lane[5]), (lane[6], lane[7]), color, 2)
