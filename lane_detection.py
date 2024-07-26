@@ -61,7 +61,8 @@ class LaneDetection():
                 lanes.append(lane)
         return lanes
     
-    def 
+    def lanes_to_coordinates(lanes):
+        return
 
     def draw_lanes(img, lanes, color = (0, 255, 0)):
         for lane in lanes:
