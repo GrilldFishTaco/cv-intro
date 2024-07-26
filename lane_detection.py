@@ -41,27 +41,37 @@ class LaneDetection():
         print(slopes)
         print(intercepts)
         return slopes, intercepts
-
-    def detect_lanes(self, lines, slopes, intercepts):
+        
+    def combine_lines(self, slopes, intercepts):
+        combined_lines = [] #contains lists of lines: [slope, intercept]
+        for i in range(len(slopes) - 1):
+            if abs(abs(slopes[i]) - abs(slopes[i + 1])) <= 3 and abs(intercepts[i] - intercepts[i + 1]) <= 3:
+                combined_lines.append([slopes[i], intercepts[i]])
+                slopes.pop(i + 1)
+                intercepts.pop(i + 1)
+                i -= 1
+        return combined_lines #[[slope, intercept], [slope, intercept], ...]
+            
+    def detect_lanes(self, slopes, intercepts):
+        combined_lines = self.combine_lines(self, slopes, intercepts)
         lanes = []
-        for i in slopes:
-            if abs(slopes[i] - slopes[i + 1]) <= 3 and abs(intercepts[i] - intercepts[i + 1]) <= 3:
-                lane = lines[i].append(lines[i + 1]) # lane = [x1, y1, x2, y2, x3, x4, y3, y4] ??
+        for i in range(len(combined_lines)):
+            if abs(abs(combined_lines[i][0]) - abs(combined_lines[i + 1][0])) <= 3:
+                lane = [combined_lines[i][0], combined_lines[i][1], combined_lines[i + 1][1]] #slope, intercept1, intercept2
                 lanes.append(lane)
-
         return lanes
     
-    def draw_lanes(img, lanes):
+    def 
+
+    def draw_lanes(img, lanes, color = (0, 255, 0)):
         for lane in lanes:
-            for line in lane:
-                cv2.line(img, (0, 0), (100, 100), (255, 0, 0), 5)
+            cv2.line(img, (lane[0], lane[1]), (lane[2], lane[3]), color, 2)
+            cv2.line(img, (lane[4], lane[5]), (lane[6], lane[7]), color, 2)
         return img
 
 
-def main(args=None):
-    rclpy.init(args=args)
-    lane_detection()
+def main():
+    LaneDetection()
     
-
 if __name__ == "__main__":
     main()
